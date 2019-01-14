@@ -1,0 +1,16 @@
+# Google API Secrets
+client_secrets.json
+application_credentials.json
+storage.json
+credentials.json
+token.json
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+
+__pycache__/
+lib/
