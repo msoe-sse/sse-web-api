@@ -1,20 +1,25 @@
+import os
+import json
+import google.auth
 from googleapiclient.discovery import build
+from google.oauth2 import service_account
 from httplib2 import Http
+from oauth2client.service_account import ServiceAccountCredentials
 from oauth2client import file, client, tools
 
-SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+SCOPE = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 SPREADSHEET_ID = '1EkZkQogMIfVETUQUzkwoPPfGKF6kjhVhuWsp4EuYDTc'
 RANGE_NAME = 'Sheet1!A1:M68'
 
 def parse_to_json():
     parsed_result = {}
-    store = file.Storage('token.json')
-    creds = store.get()
-    if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
-        creds = tools.run_flow(flow, store)
+    
+    credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+    service_account_info = json.loads(credentials_raw)
+    credentials = service_account.Credentials.from_service_account_info(service_account_info, scopes=SCOPE)
 
-    service = build('sheets', 'v4', http=creds.authorize(Http()))
+    service = build('sheets', 'v4', credentials=credentials, developerKey=os.environ.get("API_KEY"))
+
     sheet = service.spreadsheets()
     result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
     values = result.get('values', [])
@@ -24,7 +29,6 @@ def parse_to_json():
         first_row = values[0]
         for column in first_row:
             if column != "" and column != "TOTALS":
-                print(column)
                 list.append(meetings, column)
         
         parsed_result["meetings"] = meetings
