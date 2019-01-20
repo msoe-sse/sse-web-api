@@ -8,3 +8,4 @@
 6. Place the credentials.json in your project directory and run `export GOOGLE_APPLICATION_CREDENTIALS="$(< credentials.json)"`
 7. Run `export API_KEY="<API Key Here>"`
 8. To check that the environment variables have been applied correctly run `echo $GOOGLE_APPLICATION_CREDENTIALS` and `echo $API_KEY`
+9. To run the service locally run `main.py` and navigate to http://127.0.0.1:5000/points in your prefered browser or test the response using a program like postman
