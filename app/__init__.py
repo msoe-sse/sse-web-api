@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Resource, Api
-from app.GoogleDriveService import parse_to_json
+from app.GoogleSheetsService import parse_to_json
 from flask_jsonpify import jsonify
 
 app = Flask(__name__)
