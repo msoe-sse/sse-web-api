@@ -6,19 +6,17 @@ from google.oauth2 import service_account
 from httplib2 import Http
 from oauth2client.service_account import ServiceAccountCredentials
 from oauth2client import file, client, tools
+from app.GoogleServiceBuilder import GoogleServiceBuilder
 
-SCOPE = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 SPREADSHEET_ID = '1EkZkQogMIfVETUQUzkwoPPfGKF6kjhVhuWsp4EuYDTc'
 RANGE_NAME = 'Sheet1!A1:M68'
 
 def parse_to_json():
     parsed_result = {}
     
-    credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
-    service_account_info = json.loads(credentials_raw)
-    credentials = service_account.Credentials.from_service_account_info(service_account_info, scopes=SCOPE)
-
-    service = build('sheets', 'v4', credentials=credentials, developerKey=os.environ.get("API_KEY"))
+    service_builder = GoogleServiceBuilder()
+    service = service_builder.build_service(SCOPES, 'sheets', 'v4')
 
     sheet = service.spreadsheets()
     result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()

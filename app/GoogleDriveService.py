@@ -5,6 +5,7 @@ import openpyxl
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from googleapiclient.http import MediaIoBaseDownload
+from app.GoogleServiceBuilder import GoogleServiceBuilder
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
 FILE_ID = '1DXF7Qf6Zjc6yQIboDmqwl3s9l3Y6yKNK'
@@ -12,11 +13,8 @@ FILE_ID = '1DXF7Qf6Zjc6yQIboDmqwl3s9l3Y6yKNK'
 def download_and_parse_to_json():
     result = {}
 
-    credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
-    service_account_info = json.loads(credentials_raw)
-    credentials = service_account.Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
-
-    service = build('drive', 'v3', credentials=credentials, developerKey=os.environ.get("API_KEY"))
+    service_builder = GoogleServiceBuilder()
+    service = service_builder.build_service(SCOPES, 'drive', 'v3')
 
     request = service.files().get_media(fileId=FILE_ID)
     fh = io.BytesIO()
