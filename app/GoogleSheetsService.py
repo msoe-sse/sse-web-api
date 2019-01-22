@@ -7,7 +7,6 @@ from app.GoogleServiceBuilder import GoogleServiceBuilder
 from collections import deque
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-SPREADSHEET_ID = '1EkZkQogMIfVETUQUzkwoPPfGKF6kjhVhuWsp4EuYDTc'
 
 class GoogleSheetsService():
     def __init__(self):
@@ -28,7 +27,7 @@ class GoogleSheetsService():
 
     def _get_cells(self, range):
         sheet = self.sheets_service.spreadsheets()
-        result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=range).execute()
+        result = sheet.values().get(spreadsheetId=os.environ.get('GOOGLE_FILE_ID'), range=range).execute()
         values = result.get('values', [])
         return values
 

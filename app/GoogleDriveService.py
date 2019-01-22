@@ -8,7 +8,6 @@ from googleapiclient.http import MediaIoBaseDownload
 from app.GoogleServiceBuilder import GoogleServiceBuilder
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
-FILE_ID = '1DXF7Qf6Zjc6yQIboDmqwl3s9l3Y6yKNK'
 
 class GoogleDriveService():
     def __init__(self):
@@ -26,7 +25,7 @@ class GoogleDriveService():
         return  openpyxl.load_workbook(excel_bytes, data_only=True)
     
     def _download_excel_file(self):
-        request = self.drive_service.files().get_media(fileId=FILE_ID)
+        request = self.drive_service.files().get_media(fileId=os.environ.get('GOOGLE_FILE_ID'))
         fh = io.BytesIO()
         downloader = MediaIoBaseDownload(fh, request)
         done = False
