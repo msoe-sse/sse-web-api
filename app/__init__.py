@@ -11,7 +11,7 @@ google_drive_service = GoogleDriveService()
 
 class Points(Resource):
     def get(self):
-        type = request.args['type']
+        type = request.args['source']
         if type == 'sheets':
             return google_sheets_service.get_point_data()
         elif type == 'drive':
