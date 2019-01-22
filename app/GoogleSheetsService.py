@@ -13,7 +13,7 @@ class GoogleSheetsService():
     def __init__(self):
         self.sheets_service = self._build_sheets_service()
 
-    def parse_to_json(self):
+    def get_point_data(self):
         parsed_result = {}
 
         first_row_result = self._parse_first_row()
