@@ -3,54 +3,81 @@ import json
 import google.auth
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
-from httplib2 import Http
-from oauth2client.service_account import ServiceAccountCredentials
-from oauth2client import file, client, tools
 from app.GoogleServiceBuilder import GoogleServiceBuilder
+from collections import deque
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 SPREADSHEET_ID = '1EkZkQogMIfVETUQUzkwoPPfGKF6kjhVhuWsp4EuYDTc'
-RANGE_NAME = 'Sheet1!A1:M68'
 
-def parse_to_json():
-    parsed_result = {}
-    
-    service_builder = GoogleServiceBuilder()
-    service = service_builder.build_service(SCOPES, 'sheets', 'v4')
+class GoogleSheetsService():
+    def __init__(self):
+        self.sheets_service = self._build_sheets_service()
 
-    sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
-    values = result.get('values', [])
+    def parse_to_json(self):
+        parsed_result = {}
 
-    if values:
+        first_row_result = self._parse_first_row()
+        parsed_result['meetings'] = first_row_result[0]
+        parsed_result['students'] = self._parse_students(first_row_result[1])
+
+        return parsed_result
+
+    def _build_sheets_service(self):
+        service_builder = GoogleServiceBuilder()
+        return service_builder.build_service(SCOPES, 'sheets', 'v4')
+
+    def _get_cells(self, range):
+        sheet = self.sheets_service.spreadsheets()
+        result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=range).execute()
+        values = result.get('values', [])
+        return values
+
+    def _parse_first_row(self):
         meetings = []
-        first_row = values[0]
-        for column in first_row:
-            if column != "" and column != "TOTALS":
-                list.append(meetings, column)
-        
-        parsed_result["meetings"] = meetings
+        current_column = 'A'
 
+        first_row_range = 'Sheet1!A1:Z1'
+        first_row_cells = self._get_cells(first_row_range)[0]
+        cell_queue = deque(first_row_cells)
+
+        current_value = cell_queue.popleft()
+        while current_value != 'TOTALS' and len(cell_queue) != 0:
+            current_column = chr(ord(current_column) + 1)
+            if current_value != "": meetings.append(current_value)
+            current_value = cell_queue.popleft()
+
+        return meetings, current_column
+    
+    def _parse_students(self, last_column):
         students = []
-        for i in range(1, len(values)):
-            row = values[i]
-            current_student = {}
-            current_point_breakdown = []
-            for j in range(len(row)):
-                if j == 0:
-                    current_student["name"] = row[j]
-                elif j == len(row) - 1:
-                    current_student["pointTotal"] = int(row[j])
-                else:
-                    value_to_append = row[j]
-                    if value_to_append == "":
-                        value_to_append = 0
-                    else:
-                        value_to_append = int(value_to_append)
-                    list.append(current_point_breakdown, value_to_append)
-            current_student["pointBreakdown"] = current_point_breakdown
-            list.append(students, current_student)
-        
-        parsed_result["students"] = sorted(students, key = lambda x: (x['pointTotal'], x['name']), reverse=True)
+        current_row = 2
+        current_cells = self._get_cells_from_row(current_row, last_column)
+        while current_cells:
+            students.append(self._parse_student(current_cells))
+            current_row += 1
+            current_cells = self._get_cells_from_row(current_row, last_column)
+        return sorted(students, key = lambda x: (x['pointTotal'], x['name']), reverse=True)
 
-    return parsed_result
+    def _parse_student(self, current_cells):
+        current_student = {}
+        current_student['name'] = current_cells[0][0]
+        current_student['pointTotal'] = int(current_cells[0][-1])
+        current_student['pointBreakdown'] = self._parse_point_breakdown(current_cells)
+        return current_student
+
+    def _parse_point_breakdown(self, current_cells):
+        result = []
+        for i in range(1, len(current_cells[0]) - 2):
+            value_to_append = current_cells[0][i]
+            if value_to_append == "":
+                value_to_append = 0
+            else:
+                value_to_append = int(value_to_append)
+            result.append(value_to_append)
+        return result
+
+    def _get_cells_from_row(self, current_row, last_column):
+        current_range = 'Sheet1!A{}:{}{}'.format(current_row, last_column, current_row)
+        current_cells  = self._get_cells(current_range)
+        return current_cells
+
