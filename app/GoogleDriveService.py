@@ -56,7 +56,7 @@ class GoogleDriveService():
 
     def _parse_point_breakdown(self, row):
         point_breakdown = []
-        for i in range(1, len(row) - 2):
+        for i in range(1, len(row) - 1):
             value_to_append = 0
             if(row[i].value): value_to_append = row[i].value
             point_breakdown.append(value_to_append)
