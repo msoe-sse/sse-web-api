@@ -35,9 +35,9 @@ class GoogleDriveService():
 
     def _parse_meetings(self, worksheet):
         result = []
-        for row in worksheet.iter_rows(max_row=1):
+        for row in worksheet.iter_rows(max_row=1, max_col=worksheet.max_column - 1):
             for cell in row:
-                if cell.value and cell.value != "TOTALS":
+                if cell.value:
                     result.append(cell.value)
         return result
     
