@@ -15,7 +15,7 @@ class GoogleDriveService():
         result = {}
         self.drive_service = self._build_drive_service()
         workbook = self._load_workbook()
-        result['meetings'] = self._parse_meetings(workbook.active.iter_rows(max_row=1, max_col=worksheet.max_column - 1))
+        result['meetings'] = self._parse_meetings(workbook.active.iter_rows(max_row=1, max_col=workbook.active.max_column - 1))
         result['students'] = self._parse_students(workbook.active.iter_rows(min_row=2))
         return result
 

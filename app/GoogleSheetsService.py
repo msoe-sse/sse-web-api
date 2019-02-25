@@ -10,6 +10,7 @@ class GoogleSheetsService():
     def get_point_data(self):
         parsed_result = {}
 
+        self._setup_pygsheets()
         worksheet = self.gc.open_by_key(os.environ.get('GOOGLE_FILE_ID')).sheet1
         cell_values = worksheet.get_all_values()
 
