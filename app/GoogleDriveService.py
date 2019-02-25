@@ -10,14 +10,13 @@ from app.GoogleServiceBuilder import GoogleServiceBuilder
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
 class GoogleDriveService():
-    def __init__(self):
-        self.drive_service = self._build_drive_service()
     
     def get_point_data(self):
         result = {}
+        self.drive_service = self._build_drive_service()
         workbook = self._load_workbook()
-        result['meetings'] = self._parse_meetings(workbook.active)
-        result['students'] = self._parse_students(workbook.active)
+        result['meetings'] = self._parse_meetings(workbook.active.iter_rows(max_row=1, max_col=worksheet.max_column - 1))
+        result['students'] = self._parse_students(workbook.active.__le__iter_rows(min_row=2))
         return result
 
     def _load_workbook(self):
@@ -33,17 +32,17 @@ class GoogleDriveService():
             status, done = downloader.next_chunk()
         return fh
 
-    def _parse_meetings(self, worksheet):
+    def _parse_meetings(self, rows):
         result = []
-        for row in worksheet.iter_rows(max_row=1, max_col=worksheet.max_column - 1):
+        for row in rows:
             for cell in row:
                 if cell.value:
                     result.append(cell.value)
         return result
     
-    def _parse_students(self, worksheet):
+    def _parse_students(self, rows):
         result = []
-        for row in worksheet.iter_rows(min_row=2):
+        for row in rows:
             result.append(self._parse_student(row))
         return sorted(result, key = lambda x: (x['pointTotal'], x['name']), reverse=True)
 
