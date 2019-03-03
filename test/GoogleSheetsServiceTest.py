@@ -40,7 +40,6 @@ class GoogleSheetsServiceTest(unittest.TestCase):
         #Act
         result = service._parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])
 
-        print(result)
         #Assert
         self.assertEqual(3, len(result))
         self._assert_student("Student 3", [1, 1, 1], 3, result[0])
