@@ -46,6 +46,23 @@ class GoogleDriveServiceTest(unittest.TestCase):
         self._assert_student("Student 1", [1, 1, 0], 2, result[1])
         self._assert_student("Student 2", [1, 0, 0], 1, result[2])
 
+    def test_parse_students_zero_point_total(self):
+        #Arrange
+        cell_values = [[self.MockCell("Student 1"), self.MockCell(1), self.MockCell(None), self.MockCell(None), self.MockCell(1)],
+                       [self.MockCell("Student 2"), self.MockCell(None), self.MockCell(None), self.MockCell(None), self.MockCell(0)],
+                       [self.MockCell("Student 3"), self.MockCell(None), self.MockCell(None), self.MockCell(None), self.MockCell(0)],
+                       [self.MockCell("Student 4"), self.MockCell(1), self.MockCell(None), self.MockCell(1), self.MockCell(2)]]
+        
+        service = GoogleDriveService()
+
+        #Act
+        result = service._parse_students(cell_values)
+
+        #Assert
+        self.assertEqual(2, len(result))
+        self._assert_student("Student 4", [1, 0, 1], 2, result[0])
+        self._assert_student("Student 1", [1, 0, 0], 1, result[1])
+
     def _assert_student(self, name, point_breakdown, point_total, student):
         self.assertEqual(name, student["name"])
         self.assertCountEqual(point_breakdown, student["pointBreakdown"])

@@ -43,7 +43,9 @@ class GoogleDriveService():
     def _parse_students(self, rows):
         result = []
         for row in rows:
-            result.append(self._parse_student(row))
+            student_to_add = self._parse_student(row)
+            if student_to_add['pointTotal'] > 0:
+                result.append(student_to_add)
         return sorted(result, key = lambda x: (x['pointTotal'], x['name']), reverse=True)
 
     def _parse_student(self, row):
