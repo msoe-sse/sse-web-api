@@ -44,7 +44,7 @@ class GoogleDriveService():
         result = []
         for row in rows:
             student_to_add = self._parse_student(row)
-            if student_to_add['pointTotal'] > 0
+            if student_to_add['pointTotal'] > 0:
                 result.append(student_to_add)
         return sorted(result, key = lambda x: (x['pointTotal'], x['name']), reverse=True)
 
