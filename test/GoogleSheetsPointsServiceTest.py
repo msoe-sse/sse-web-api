@@ -3,6 +3,9 @@ from app.GoogleSheetsPointsService import GoogleSheetsPointsService
 
 class GoogleSheetsPointsServiceTest(unittest.TestCase):
     def test_parse_first_row(self):
+        """
+        Tests to make sure that the meeting names are parsed correctly
+        """
         #Arrange
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"]]
 
@@ -15,6 +18,9 @@ class GoogleSheetsPointsServiceTest(unittest.TestCase):
         self.assertCountEqual(["General Meeting 1", "General Meeting 2", "General Meeting 3"], result)
 
     def test_parse_students_basic(self):
+        """
+        Basic test case for parse students which parses one student
+        """
         #Arrange
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"],
                        ["Student 1", "1", "1", "1", "3"]]
@@ -29,6 +35,9 @@ class GoogleSheetsPointsServiceTest(unittest.TestCase):
         self._assert_student("Student 1", [1, 1, 1], 3, result[0])
 
     def test_parse_students_sorting(self):
+        """
+        Test case to make sure that the students are being sorted descending by point total
+        """
          #Arrange
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"],
                        ["Student 1", "1", "1", "", "2"],
