@@ -43,7 +43,7 @@ class GoogleSheetsPointsService():
         students = []
         for i in range(1, len(cell_values)):
             current_student = self._parse_student(cell_values[i], meetings)
-            if len(current_student) != 0:
+            if len(current_student) != 0 and current_student['pointTotal'] > 0:
                 students.append(current_student)
         return sorted(students, key = lambda x: (x['pointTotal'], x['name']), reverse=True)
 
