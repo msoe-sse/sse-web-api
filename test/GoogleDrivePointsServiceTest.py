@@ -1,13 +1,13 @@
 import unittest
-from app.GoogleDriveService import GoogleDriveService
+from app.GoogleDrivePointsService import GoogleDrivePointsService
 
-class GoogleDriveServiceTest(unittest.TestCase):
+class GoogleDrivePointsServiceTest(unittest.TestCase):
     def test_parse_meetings(self):
         #Arrange
         cell_values = [[self.MockCell(None), self.MockCell("General Meeting 1"), 
                         self.MockCell("General Meeting 2"), self.MockCell("General Meeting 3")]]
 
-        service = GoogleDriveService()
+        service = GoogleDrivePointsService()
 
         #Act
         result = service._parse_meetings(cell_values)
@@ -20,7 +20,7 @@ class GoogleDriveServiceTest(unittest.TestCase):
         cell_values = [[self.MockCell("Student 1"), self.MockCell(1), self.MockCell(1), 
                         self.MockCell(1), self.MockCell(3)]]
 
-        service = GoogleDriveService()
+        service = GoogleDrivePointsService()
 
         #Act
         result = service._parse_students(cell_values)
@@ -35,7 +35,7 @@ class GoogleDriveServiceTest(unittest.TestCase):
                        [self.MockCell("Student 2"), self.MockCell(1), self.MockCell(None), self.MockCell(None), self.MockCell(1)],
                        [self.MockCell("Student 3"), self.MockCell(1), self.MockCell(1), self.MockCell(1), self.MockCell(3)]]
         
-        service = GoogleDriveService()
+        service = GoogleDrivePointsService()
 
         #Act
         result = service._parse_students(cell_values)

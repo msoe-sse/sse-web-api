@@ -5,7 +5,7 @@ import pygsheets
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
-class GoogleSheetsService():
+class GoogleSheetsPointsService():
 
     def get_point_data(self):
         parsed_result = {}

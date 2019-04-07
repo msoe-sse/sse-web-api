@@ -1,12 +1,12 @@
 import unittest
-from app.GoogleSheetsService import GoogleSheetsService
+from app.GoogleSheetsPointsService import GoogleSheetsPointsService
 
-class GoogleSheetsServiceTest(unittest.TestCase):
+class GoogleSheetsPointsServiceTest(unittest.TestCase):
     def test_parse_first_row(self):
         #Arrange
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"]]
 
-        service = GoogleSheetsService()
+        service = GoogleSheetsPointsService()
 
         #Act
         result = service._parse_first_row(cell_values)
@@ -19,7 +19,7 @@ class GoogleSheetsServiceTest(unittest.TestCase):
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"],
                        ["Student 1", "1", "1", "1", "3"]]
 
-        service = GoogleSheetsService()
+        service = GoogleSheetsPointsService()
 
         #Act
         result = service._parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])
@@ -35,7 +35,7 @@ class GoogleSheetsServiceTest(unittest.TestCase):
                        ["Student 2", "1", "", "", "1"],
                        ["Student 3", "1", "1", "1", "3"]]
 
-        service = GoogleSheetsService()
+        service = GoogleSheetsPointsService()
 
         #Act
         result = service._parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])

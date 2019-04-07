@@ -9,7 +9,7 @@ from app.GoogleServiceBuilder import GoogleServiceBuilder
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
-class GoogleDriveService():
+class GoogleDrivePointsService():
     
     def get_point_data(self):
         result = {}
