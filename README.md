@@ -11,5 +11,4 @@
 7. Run `export API_KEY="<API Key Here>"`
 8. Run `export GOOGLE_FILE_ID="<File Id Here>"`
 8. To check that the environment variables have been applied correctly run `echo $GOOGLE_APPLICATION_CREDENTIALS`, `echo $API_KEY`, and `echo $GOOGLE_FILE_ID`
-9. To run the service locally run `./env/Scripts/python main.py` and navigate to http://localhost:5000/points?source=<SOURCE_HERE> in your prefered browser or test the response using a program like postman
-    - The source parameter is either drive or sheets corresponding to Google Drive or Gooogle Sheets
+9. To run the service locally run `./env/Scripts/python main.py` and navigate to http://localhost:5000/points in your prefered browser or test the response using a program like postman
