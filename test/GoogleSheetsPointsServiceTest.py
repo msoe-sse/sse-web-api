@@ -1,12 +1,15 @@
 import unittest
-from app.GoogleSheetsService import GoogleSheetsService
+from app.GoogleSheetsPointsService import GoogleSheetsPointsService
 
-class GoogleSheetsServiceTest(unittest.TestCase):
+class GoogleSheetsPointsServiceTest(unittest.TestCase):
     def test_parse_first_row(self):
+        """
+        Tests to make sure that the meeting names are parsed correctly
+        """
         #Arrange
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"]]
 
-        service = GoogleSheetsService()
+        service = GoogleSheetsPointsService()
 
         #Act
         result = service._parse_first_row(cell_values)
@@ -15,11 +18,14 @@ class GoogleSheetsServiceTest(unittest.TestCase):
         self.assertCountEqual(["General Meeting 1", "General Meeting 2", "General Meeting 3"], result)
 
     def test_parse_students_basic(self):
+        """
+        Basic test case for parse students which parses one student
+        """
         #Arrange
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"],
                        ["Student 1", "1", "1", "1", "3"]]
 
-        service = GoogleSheetsService()
+        service = GoogleSheetsPointsService()
 
         #Act
         result = service._parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])
@@ -29,13 +35,16 @@ class GoogleSheetsServiceTest(unittest.TestCase):
         self._assert_student("Student 1", [1, 1, 1], 3, result[0])
 
     def test_parse_students_sorting(self):
+        """
+        Test case to make sure that the students are being sorted descending by point total
+        """
          #Arrange
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"],
                        ["Student 1", "1", "1", "", "2"],
                        ["Student 2", "1", "", "", "1"],
                        ["Student 3", "1", "1", "1", "3"]]
 
-        service = GoogleSheetsService()
+        service = GoogleSheetsPointsService()
 
         #Act
         result = service._parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])

@@ -1,12 +1,16 @@
 import os
-import json
 from app.GoogleServiceBuilder import GoogleServiceBuilder
 import pygsheets
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
-class GoogleSheetsService():
-
+class GoogleSheetsPointsService():
+    """
+    A service class which takes an SSE attendance spreadsheet and parses it as a dictionary
+    which will be turned into the JSON format that the website can use to display
+    SSE points. The parsing is done with the wrapper library pygsheets since it's way faster
+    then trying to use the Google Sheets API by itself
+    """
     def get_point_data(self):
         parsed_result = {}
 
