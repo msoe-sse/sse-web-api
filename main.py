@@ -1,16 +1,14 @@
 import unittest
 
 from app.main import create_app
-from flask_script import Manager
-
 
 app = create_app()
 
-@manager.command
+@app.cli.command('run')
 def run():
      app.run()
 
-@manager.command
+@app.cli.command('test')
 def test():
      tests = unittest.TestLoader().discover('app/main/test', pattern='*_test.py')
      result = unittest.TextTestRunner(verbosity=2).run(tests)
