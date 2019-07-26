@@ -1,11 +1,11 @@
 import os
-from app.google_service_builder import build_credentials
+from .google_service_builder import build_credentials
 import pygsheets
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
 def get_point_data(self):
-     parsed_result = {}
+    parsed_result = {}
 
     gc = setup_pygsheets()
     worksheet = gc.open_by_key(os.environ.get('GOOGLE_FILE_ID')).sheet1
