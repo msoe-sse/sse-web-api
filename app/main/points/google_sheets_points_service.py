@@ -4,7 +4,7 @@ import pygsheets
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
-def get_point_data(self):
+def get_point_data():
     parsed_result = {}
 
     gc = setup_pygsheets()
@@ -18,11 +18,11 @@ def get_point_data(self):
     return parsed_result, 200
 
 
-def setup_pygsheets(self):
+def setup_pygsheets():
     credentials = service_builder.build_credentials(SCOPES)
     return pygsheets.authorize(custom_credentials=credentials)
 
-def parse_first_row(self, cell_values):
+def parse_first_row(cell_values):
     meetings = []
     first_row = cell_values[0]
     for value in first_row:
@@ -31,7 +31,7 @@ def parse_first_row(self, cell_values):
     del meetings[-1]
     return meetings
 
-def parse_students(self, cell_values, meetings):
+def parse_students(cell_values, meetings):
     students = []
     for i in range(1, len(cell_values)):
         current_student = parse_student(cell_values[i], meetings)
@@ -39,7 +39,7 @@ def parse_students(self, cell_values, meetings):
             students.append(current_student)
     return sorted(students, key = lambda x: (x['pointTotal'], x['name']), reverse=True)
 
-def parse_student(self, current_row, meetings):
+def parse_student(current_row, meetings):
     current_student = {}
     if current_row[0] != "":
         current_student['name'] = current_row[0]
@@ -47,7 +47,7 @@ def parse_student(self, current_row, meetings):
         current_student['pointBreakdown'] = parse_point_breakdown(current_row, meetings)
     return current_student
 
-def parse_point_breakdown(self, current_row, meetings):
+def parse_point_breakdown(current_row, meetings):
     result = []
     for i in range(1, len(meetings) + 1):
         value_to_append = current_row[i]
