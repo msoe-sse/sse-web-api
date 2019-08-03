@@ -19,7 +19,7 @@ def get_point_data():
 
 
 def setup_pygsheets():
-    credentials = service_builder.build_credentials(SCOPES)
+    credentials = build_credentials(SCOPES)
     return pygsheets.authorize(custom_credentials=credentials)
 
 def parse_first_row(cell_values):

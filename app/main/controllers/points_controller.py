@@ -5,7 +5,7 @@ from ..points.points_dto import PointsDto
 api = PointsDto.api
 _points = PointsDto.points
 
-@api.route('/points')
+@api.route('/')
 class Points(Resource):
     #@cors.crossdomain(origin='*', methods={"GET"})
     @api.doc('gets the list of point data for a quarter')
