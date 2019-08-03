@@ -7,9 +7,6 @@ _points = PointsDto.points
 
 @api.route('/points')
 class Points(Resource):
-    def __init__(self):
-        self.sheets_service = GoogleSheetsPointsService()
-
     #@cors.crossdomain(origin='*', methods={"GET"})
     @api.doc('gets the list of point data for a quarter')
     @api.marshal_list_with(_points, envelope='data')
