@@ -2,7 +2,7 @@ from flask_restplus import Namespace, fields
 
 class ResourcesDto:
     api = Namespace('resources', description='SSE Resources related operations')
-    resource = api.model('resources', {
+    resource = api.model('resource', {
         'author': fields.String(required=True, description='The person who orginally shared the resources'),
         'contents': fields.String(required=True, description='The contents of a resource')
     })

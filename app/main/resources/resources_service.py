@@ -12,7 +12,8 @@ def get_all_resources():
 
     parsed_resources = []
     for resource in json_response['records']:
-        parsed_resources.append({'author': resource['fields']['Author'], 'contents': resource['fields']['ResourceContents']})
+        if 'Author' in resource['fields'] and 'ResourceContents' in resource['fields']:
+            parsed_resources.append({'author': resource['fields']['Author'], 'contents': resource['fields']['ResourceContents']})
     
     result['resources'] = parsed_resources
     

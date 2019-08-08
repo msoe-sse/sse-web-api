@@ -1,9 +1,9 @@
 from flask_restplus import Resource
-from ..resources.resource_service import get_all_resources
+from ..resources.resources_service import get_all_resources
 from ..resources.resources_dto import ResourcesDto
 
 api = ResourcesDto.api
-_resources = ResourcesDto.points
+_resources = ResourcesDto.resources
 
 @api.route('/')
 class Resources(Resource):
