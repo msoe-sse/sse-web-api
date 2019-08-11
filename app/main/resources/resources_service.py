@@ -10,6 +10,10 @@ def get_all_resources():
     response = requests.get(AIRTABLE_BASE_URL, headers=headers)
 
     json_response = response.json()
+
+    if response.status_code != 200:
+        return {'error': json_response['error']['message']}, response.status_code
+
     parsed_resources = []
     for resource in json_response['records']:
         if 'Author' in resource['fields'] and 'ResourceContents' in resource['fields']:
@@ -24,6 +28,9 @@ def create_resource(author, resource_contents):
                 'Content-Type': 'application/json'}
     response = requests.post(AIRTABLE_BASE_URL, headers=headers, json={'fields': {'Author': author, 'ResourceContents': resource_contents}})
     json_response = response.json()
-    
+
+    if response.status_code != 200:
+        return {'error': json_response['error']['message']}, response.status_code
+
     return {'author': json_response['fields']['Author'], 'contents': json_response['fields']['ResourceContents']}, 200
 
