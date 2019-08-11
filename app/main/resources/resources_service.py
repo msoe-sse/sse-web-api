@@ -22,8 +22,8 @@ def get_all_resources():
 def create_resource(author, resource_contents):
     headers = {'Authorization': "Bearer {}".format(API_KEY),
                 'Content-Type': 'application/json'}
-    response = requests.post(AIRTABLE_BASE_URL, headers=headers, data={'fields': {'Author': author, 'ResourceContents': resource_contents}})
+    response = requests.post(AIRTABLE_BASE_URL, headers=headers, json={'fields': {'Author': author, 'ResourceContents': resource_contents}})
     json_response = response.json()
-
-    return {'author': json_response['fields']['Author'], 'contents': ['fields']['ResourceContents']}, 200
+    
+    return {'author': json_response['fields']['Author'], 'contents': json_response['fields']['ResourceContents']}, 200
 
