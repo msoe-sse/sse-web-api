@@ -1,5 +1,5 @@
 import unittest
-from app.GoogleSheetsPointsService import GoogleSheetsPointsService
+from app.main.points.google_sheets_points_service import parse_first_row, parse_students
 
 class GoogleSheetsPointsServiceTest(unittest.TestCase):
     def test_parse_first_row(self):
@@ -9,10 +9,8 @@ class GoogleSheetsPointsServiceTest(unittest.TestCase):
         #Arrange
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"]]
 
-        service = GoogleSheetsPointsService()
-
         #Act
-        result = service._parse_first_row(cell_values)
+        result = parse_first_row(cell_values)
 
         #Assert
         self.assertCountEqual(["General Meeting 1", "General Meeting 2", "General Meeting 3"], result)
@@ -25,10 +23,8 @@ class GoogleSheetsPointsServiceTest(unittest.TestCase):
         cell_values = [["", "General Meeting 1", "General Meeting 2", "General Meeting 3", "TOTALS"],
                        ["Student 1", "1", "1", "1", "3"]]
 
-        service = GoogleSheetsPointsService()
-
         #Act
-        result = service._parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])
+        result = parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])
 
         #Assert
         self.assertEqual(1, len(result))
@@ -44,10 +40,8 @@ class GoogleSheetsPointsServiceTest(unittest.TestCase):
                        ["Student 2", "1", "", "", "1"],
                        ["Student 3", "1", "1", "1", "3"]]
 
-        service = GoogleSheetsPointsService()
-
         #Act
-        result = service._parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])
+        result = parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])
 
         #Assert
         self.assertEqual(3, len(result))
@@ -63,10 +57,8 @@ class GoogleSheetsPointsServiceTest(unittest.TestCase):
                        ["Student 3", "", "", "", "0"],
                        ["Student 4", "1", "", "1", "2"]]
         
-        service = GoogleSheetsService()
-
         #Act
-        result = service._parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])
+        result = parse_students(cell_values, ["General Meeting 1", "General Meeting 2", "General Meeting 3"])
 
         #Assert
         self.assertEqual(2, len(result))

@@ -1,19 +1,13 @@
-from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
-from flask_restful.utils import cors
-from app.GoogleSheetsPointsService import GoogleSheetsPointsService
-from flask_jsonpify import jsonify
+from flask_restplus import Api
+from flask import Blueprint
 
-app = Flask(__name__)
-api = Api(app)
+from .main.controllers.points_controller import api as points_ns
 
-class Points(Resource):
-    def __init__(self):
-        self.sheets_service = GoogleSheetsPointsService()
+blueprint = Blueprint('api', __name__)
 
-    @cors.crossdomain(origin='*', methods={"GET"})
-    def get(self):
-        return jsonify(self.sheets_service.get_point_data())
+api = Api(blueprint,
+          title='SSE Website API',
+          version='1.0',
+          description='A API used for the MSOE Society of Software Engineers Website')
 
-
-api.add_resource(Points, '/points')
+api.add_namespace(points_ns, path='/points')
