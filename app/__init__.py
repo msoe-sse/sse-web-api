@@ -1,5 +1,6 @@
 from flask_restplus import Api
 from flask import Blueprint
+from flask_cors import CORS
 
 from .main.controllers.points_controller import api as points_ns
 from app.main import create_app
@@ -17,3 +18,5 @@ app = create_app()
 app.register_blueprint(blueprint)
 
 app.app_context().push()
+
+CORS(app, resources={r"/*": {"origins": "*"}})
