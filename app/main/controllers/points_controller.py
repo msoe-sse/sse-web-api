@@ -7,8 +7,7 @@ _points = PointsDto.points
 
 @api.route('/')
 class Points(Resource):
-    #@cors.crossdomain(origin='*', methods={"GET"})
     @api.doc('gets the list of point data for a quarter')
-    @api.marshal_list_with(_points, envelope='data')
+    @api.marshal_list_with(_points)
     def get(self):
         return get_point_data()
