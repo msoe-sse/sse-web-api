@@ -1,12 +1,6 @@
 import unittest
 
-from app import blueprint
-from app.main import create_app
-
-app = create_app()
-app.register_blueprint(blueprint)
-
-app.app_context().push()
+from app import app
 
 @app.cli.command('test')
 def test():
