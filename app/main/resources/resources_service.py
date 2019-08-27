@@ -1,21 +1,17 @@
 import os
+from airtable import Airtable
 import requests
 
+airtable = Airtable('appnfHuWptUFonq1U', 'Resources')
 AIRTABLE_BASE_URL = 'https://api.airtable.com/v0/appnfHuWptUFonq1U/Resources'
 API_KEY = os.environ.get('AIRTABLE_API_KEY')
 
 def get_all_resources():
     result = {}
-    headers = {'Authorization': "Bearer {}".format(API_KEY)}
-    response = requests.get(AIRTABLE_BASE_URL, headers=headers)
-
-    json_response = response.json()
-
-    if response.status_code != 200:
-        return {'error': json_response['error']['message']}, response.status_code
+    records = airtable.get_all()
 
     parsed_resources = []
-    for resource in json_response['records']:
+    for resource in records:
         if 'Author' in resource['fields'] and 'ResourceContents' in resource['fields']:
             parsed_resources.append({'author': resource['fields']['Author'], 'contents': resource['fields']['ResourceContents']})
     
@@ -24,13 +20,7 @@ def get_all_resources():
     return result, 200
 
 def create_resource(author, resource_contents):
-    headers = {'Authorization': "Bearer {}".format(API_KEY),
-                'Content-Type': 'application/json'}
-    response = requests.post(AIRTABLE_BASE_URL, headers=headers, json={'fields': {'Author': author, 'ResourceContents': resource_contents}})
-    json_response = response.json()
+    result = airtable.insert({'Author': author, 'ResourceContents': resource_contents})
 
-    if response.status_code != 200:
-        return {'error': json_response['error']['message']}, response.status_code
-
-    return {'author': json_response['fields']['Author'], 'contents': json_response['fields']['ResourceContents']}, 200
+    return {'author': result['fields']['Author'], 'contents': result['fields']['ResourceContents']}, 200
 
