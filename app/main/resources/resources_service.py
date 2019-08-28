@@ -3,8 +3,6 @@ from airtable import Airtable
 import requests
 
 airtable = Airtable('appnfHuWptUFonq1U', 'Resources')
-AIRTABLE_BASE_URL = 'https://api.airtable.com/v0/appnfHuWptUFonq1U/Resources'
-API_KEY = os.environ.get('AIRTABLE_API_KEY')
 
 def get_all_resources():
     """
