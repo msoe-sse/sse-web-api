@@ -7,6 +7,9 @@ AIRTABLE_BASE_URL = 'https://api.airtable.com/v0/appnfHuWptUFonq1U/Resources'
 API_KEY = os.environ.get('AIRTABLE_API_KEY')
 
 def get_all_resources():
+    """
+    Returns a dictionary with a list of all SSE resources from the Airtable database
+    """
     result = {}
     records = airtable.get_all()
 
@@ -20,6 +23,10 @@ def get_all_resources():
     return result, 200
 
 def create_resource(author, resource_contents):
+    """
+    Creates a new SSE resource and inserts it into the Airtable database given an anthor and 
+    the contents of the resource
+    """
     result = airtable.insert({'Author': author, 'ResourceContents': resource_contents})
 
     return {'author': result['fields']['Author'], 'contents': result['fields']['ResourceContents']}, 200
