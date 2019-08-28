@@ -7,4 +7,5 @@ install:
   - pip install -r requirements.txt
 script:
   - export FLASK_APP=main.py
+  - export AIRTABLE_API_KEY=""
   - flask test
