@@ -3,6 +3,7 @@ from flask import Blueprint
 from flask_cors import CORS
 
 from .main.controllers.points_controller import api as points_ns
+from .main.controllers.resources_controller import api as resources_ns
 from app.main import create_app
 
 blueprint = Blueprint('api', __name__)
@@ -13,6 +14,7 @@ api = Api(blueprint,
           description='A API used for the MSOE Society of Software Engineers Website')
 
 api.add_namespace(points_ns, path='/points')
+api.add_namespace(resources_ns, path='/resources')
 
 app = create_app()
 app.register_blueprint(blueprint)
