@@ -8,4 +8,5 @@ install:
 script:
   - export FLASK_APP=main.py
   - export AIRTABLE_API_KEY=""
+  - export RESOURCE_TABLE="ResourcesStaging"
   - flask test
