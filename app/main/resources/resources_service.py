@@ -1,8 +1,7 @@
 import os
 from airtable import Airtable
-import requests
 
-airtable = Airtable('appnfHuWptUFonq1U', 'Resources')
+airtable = Airtable('appnfHuWptUFonq1U', os.environ.get('RESOURCE_TABLE'))
 
 def get_all_resources():
     """
@@ -20,12 +19,17 @@ def get_all_resources():
     
     return result, 200
 
-def create_resource(author, resource_contents):
+def create_resource(author, resource_contents, message_id):
     """
     Creates a new SSE resource and inserts it into the Airtable database given an anthor and 
     the contents of the resource
     """
-    result = airtable.insert({'Author': author, 'ResourceContents': resource_contents})
+    match = airtable.match('SlackMessageId', message_id)
 
-    return {'author': result['fields']['Author'], 'contents': result['fields']['ResourceContents']}, 200
+    if not match:    
+        result = airtable.insert({'Author': author, 'ResourceContents': resource_contents, 'SlackMessageId': message_id})
+
+        return {'author': result['fields']['Author'], 'contents': result['fields']['ResourceContents']}, 200
+    
+    return {'error': 'Message has already been saved as a resource.'}, 400
 

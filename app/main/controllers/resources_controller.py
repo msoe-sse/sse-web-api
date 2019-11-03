@@ -16,4 +16,4 @@ class Resources(Resource):
     @api.doc('creates a new SSE resource')
     @api.expect(_resource)
     def post(self):
-        return create_resource(api.payload['author'], api.payload['contents'])
+        return create_resource(api.payload['author'], api.payload['contents'], api.payload['messageId'])
