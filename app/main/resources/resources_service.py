@@ -21,8 +21,8 @@ def get_all_resources():
 
 def create_resource(author, resource_contents, message_id):
     """
-    Creates a new SSE resource and inserts it into the Airtable database given an anthor and 
-    the contents of the resource
+    Creates a new SSE resource and inserts it into the Airtable database given an author, 
+    the contents of the resource, and the message slack id we're saving as a resource
     """
     match = airtable.match('SlackMessageId', message_id)
 
