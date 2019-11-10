@@ -1,6 +1,7 @@
 from flask_restplus import Resource
 from ..resources.resources_service import get_all_resources, create_resource
 from ..resources.resources_dto import ResourcesDto
+from ..auth.authorize import authorize
 
 api = ResourcesDto.api
 _resources = ResourcesDto.resources
@@ -15,5 +16,6 @@ class Resources(Resource):
     
     @api.doc('creates a new SSE resource')
     @api.expect(_resource)
+    @authorize
     def post(self):
         return create_resource(api.payload['author'], api.payload['contents'], api.payload['messageId'])
